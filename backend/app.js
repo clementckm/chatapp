@@ -3,8 +3,9 @@ var socket = require('socket.io');
 
 var app = express();
 
+const port = process.env.PORT || 5000;
 
-server = app.listen(5000, function(){
+server = app.listen(port, function(){
     console.log('server is running on port 5000')
 });
 
