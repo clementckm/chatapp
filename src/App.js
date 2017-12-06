@@ -20,7 +20,7 @@ class App extends Component {
         timestamp: ''
       }
     }
-    this.socket = io('localhost:5000');
+    this.socket = io('https://obscure-hollows-61259.herokuapp.com/');
     this.socket.on('RECEIVE_MESSAGE', function(data){
       addMessage(data);
     });
