@@ -22,9 +22,7 @@ class App extends Component {
         timestamp: ''
       }
     }
-    // const port = process.env.PORT || 'localhost:5000';
-    // this.socket = io(port);
-    // this.socket = io('https://obscure-hollows-61259.herokuapp.com/');
+
     socket.on('RECEIVE_MESSAGE', function(data){
       addMessage(data);
     });
