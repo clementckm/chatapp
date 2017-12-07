@@ -4,6 +4,8 @@ import styled from 'styled-components';
 const ChatHistoryBox = styled.div`
   text-align: left;
   width: 100%;
+  height: 620px;
+  overflow-y: auto;
 `;
 
 const ChatBox = styled.div`

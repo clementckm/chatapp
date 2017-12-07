@@ -6,7 +6,11 @@ import { BrowserRouter } from 'react-router-dom'
 import { injectGlobal } from 'styled-components'
 
 injectGlobal`
+  html {
+    height: 100%;
+  }
   body {
+    height: 100%;
     margin: 0;
     padding: 0;
     font-family: sans-serif;
