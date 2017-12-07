@@ -52,16 +52,16 @@ class Chat extends Component {
       this.props.getCoinbase();
       this.props.getAccounts();
     }
-
+          //  <Button onClick={() => this.reconnect()}>Reconnect</Button>
     render() {
       return (
           <div>
            <P>User address: {this.props.userAddress}</P>
-           <Button onClick={() => this.reconnect()}>Reconnect</Button>
+
           <Button onClick={this.logout}>Logout</Button>
           {this.props.loggedIn === "Successfully connected to MetaMask" ?
             <div>
-            <UserList />
+            <UserList userLoggedIn={this.props.userLoggedIn}/>
             <ChatInputBox placeholder='Type a message' value={this.props.value} onChange={this.handleInputChange} onKeyPress={this.handlePressEnter}/>
             <ChatHistory userAddress={this.props.userAddress} chatHistory={this.props.chatHistory} />
             </div>

@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
       loggedIn: 'Loading',
       userAddress: 'Getting address..',
+      userLoggedIn:[],
       chatHistory:[],
       value: '',
       message: {
@@ -30,6 +31,25 @@ class App extends Component {
     const addMessage = data => {
       this.setState({chatHistory: [...this.state.chatHistory, data]});
     };
+    socket.on('ONLINE_USER', function(data){
+      addUser(data);
+    });
+    const addUser = data => {
+      this.setState({userLoggedIn: [...this.state.userLoggedIn, data]});
+    };
+    socket.on('OFFLINE_USER', function(data){
+      removeUser(data);
+    });
+    const removeUser = data => {
+      var len
+      var u = this.state.userLoggedIn.slice();
+      for(var i = 0, len = this.state.userLoggedIn.length; i < len; i++ ) {
+           if( u[i].userAddress === data ){
+               u.splice(i,1);
+           }
+       }
+      this.setState({userLoggedIn: u})
+    }
     this.getCoinbase = this.getCoinbase.bind(this);
     this.getAccounts = this.getAccounts.bind(this);
     this.generateMessage = this.generateMessage.bind(this);
@@ -95,11 +115,12 @@ class App extends Component {
 
   signIn () {
     socket.emit('ONLINE',{
-      userLoggedIn: this.state.userAddress
+      userAddress: this.state.userAddress
     })
   }
 
   logout(){
+    socket.emit('OFFLINE', this.state.userAddress)
     this.setState({
       loggedIn: 'Loading',
       userAddress: 'Getting address..'
@@ -132,6 +153,7 @@ class App extends Component {
               generateMessage={this.generateMessage}
               value={this.state.value}
               chatHistory={this.state.chatHistory}
+              userLoggedIn={this.state.userLoggedIn}
               />}
            />
         </Switch>
