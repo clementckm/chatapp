@@ -31,6 +31,7 @@ class Login extends Component {
 
   goToChat () {
       this.props.history.push('/');
+      this.props.signIn();
     }
 
   render() {
@@ -41,7 +42,7 @@ class Login extends Component {
          <P>Login Status: {this.props.loggedIn}</P>
          <P>User address: {this.props.userAddress}</P>
          <Button onClick={() => this.checkLogin()}>Connect to Metamask</Button>
-         {this.props.loggedIn !== 'Loading' ?
+         {this.props.loggedIn === "Successfully connected to MetaMask" ?
          <Button onClick={() => this.goToChat()}>Login</Button>
          : ('') }
       </div>

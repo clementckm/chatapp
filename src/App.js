@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { userEthereumClient } from './ethereumClient.js'
+import { socket } from './socket.js'
 import moment from 'moment'
 import io from "socket.io-client"
 import Login from './Login.js'
@@ -20,11 +21,12 @@ class App extends Component {
         timestamp: ''
       }
     }
-    this.socket = io('https://obscure-hollows-61259.herokuapp.com/');
-    this.socket.on('RECEIVE_MESSAGE', function(data){
+    // const port = process.env.PORT || 'localhost:5000';
+    // this.socket = io(port);
+    // this.socket = io('https://obscure-hollows-61259.herokuapp.com/');
+    socket.on('RECEIVE_MESSAGE', function(data){
       addMessage(data);
     });
-
     const addMessage = data => {
       this.setState({chatHistory: [...this.state.chatHistory, data]});
     };
@@ -34,6 +36,7 @@ class App extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handlePressEnter = this.handlePressEnter.bind(this);
     this.logout = this.logout.bind(this);
+    this.signIn = this.signIn.bind(this);
   }
 
   getAccounts(){
@@ -68,7 +71,7 @@ class App extends Component {
 
   generateMessage () {
     const time =  moment().format('MMMM Do YYYY, h:mm:ss a');
-      this.socket.emit('SEND_MESSAGE',
+      socket.emit('SEND_MESSAGE',
         {
           sender: this.state.userAddress,
           payload: this.state.value,
@@ -90,6 +93,12 @@ class App extends Component {
     }
   }
 
+  signIn () {
+    socket.emit('ONLINE',{
+      userLoggedIn: this.state.userAddress
+    })
+  }
+
   logout(){
     this.setState({
       loggedIn: 'Loading',
@@ -108,7 +117,8 @@ class App extends Component {
               loggedIn={this.state.loggedIn}
               userAddress={this.state.userAddress}
               getAccounts={this.getAccounts}
-              getCoinbase={this.getCoinbase}/>}
+              getCoinbase={this.getCoinbase}
+              signIn={this.signIn}/>}
           />
           <Route exact path='/'
             render={routeProps =>

@@ -3,6 +3,7 @@ import moment from 'moment'
 import io from "socket.io-client"
 import ChatHistory from './ChatHistory.js'
 import styled from 'styled-components'
+import UserList from './UserList.js'
 
 const ChatInputBox = styled.input`
   width: 100%;
@@ -58,8 +59,9 @@ class Chat extends Component {
            <P>User address: {this.props.userAddress}</P>
            <Button onClick={() => this.reconnect()}>Reconnect</Button>
           <Button onClick={this.logout}>Logout</Button>
-          {this.props.loggedIn !== 'Loading' ?
+          {this.props.loggedIn === "Successfully connected to MetaMask" ?
             <div>
+            <UserList />
             <ChatInputBox placeholder='Type a message' value={this.props.value} onChange={this.handleInputChange} onKeyPress={this.handlePressEnter}/>
             <ChatHistory userAddress={this.props.userAddress} chatHistory={this.props.chatHistory} />
             </div>
