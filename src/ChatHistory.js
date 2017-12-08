@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 const ChatHistoryBox = styled.div`
@@ -34,17 +35,29 @@ const SenderBox = styled.div`
   opacity: 0.7;
   font-style: italic;
 `;
+const EndDiv = styled.div`
+  clear: both;
+`;
 class ChatHistory extends Component {
   constructor(props){
     super(props);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
   }
+  scrollToBottom() {
+    const node = ReactDOM.findDOMNode(this.el)
+    console.log(node)
+    node.scrollIntoView();
 
+  }
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
   render() {
     return (
       <ChatHistoryBox>
         {this.props.chatHistory.map((item, i)=>{
           return (
-            <ChatBox userAddress={this.props.userAddress} sender={item.sender} key={i}>
+            <ChatBox ref={i} userAddress={this.props.userAddress} sender={item.sender} key={i}>
             <PayloadBox userAddress={this.props.userAddress} sender={item.sender}>{item.payload}</PayloadBox>
             <SenderBox>{item.sender}</SenderBox>
             <TimestampBox>{item.timestamp}</TimestampBox>
@@ -52,6 +65,7 @@ class ChatHistory extends Component {
           );
         })
         }
+        <EndDiv ref={el => { this.el = el; }}></EndDiv>
       </ChatHistoryBox>
     );
   }

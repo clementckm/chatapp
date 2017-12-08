@@ -41,6 +41,7 @@ class Chat extends Component {
       this.handlePressEnter = this.handlePressEnter.bind(this);
       this.logout = this.logout.bind(this);
       this.reconnect = this.reconnect.bind(this);
+
     }
 
     handleInputChange(evt) {
