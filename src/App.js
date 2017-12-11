@@ -6,6 +6,7 @@ import moment from 'moment'
 import io from "socket.io-client"
 import Login from './Login.js'
 import Chat from './Chat.js'
+import PrivateChat from './PrivateChat.js'
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class App extends Component {
       to:'',
       userLoggedIn:[],
       chatHistory:[],
+      privateChatHistory:[],
       value: '',
       message: {
         sender: '',
@@ -24,10 +26,12 @@ class App extends Component {
       }
     }
 
-    socket.on('PRIVATE_MESSAGE', function(msg) {
-      console.log(msg);
-      addMessage(msg);
+    socket.on('PRIVATE_MESSAGE', function(data) {
+      addPrivateMessage(data);
     });
+    const addPrivateMessage = data => {
+      this.setState({privateChatHistory: [...this.state.privateChatHistory, data]});
+    };
     socket.on('RECEIVE_MESSAGE', function(data){
       addMessage(data);
     });
@@ -57,12 +61,11 @@ class App extends Component {
     this.getAccounts = this.getAccounts.bind(this);
     this.generateMessage = this.generateMessage.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handlePressEnter = this.handlePressEnter.bind(this);
     this.logout = this.logout.bind(this);
     this.signIn = this.signIn.bind(this);
     this.signInPrivate = this.signInPrivate.bind(this);
-    this.sendPrivate = this.sendPrivate.bind(this);
-    this.receivePrivate = this.receivePrivate.bind(this);
+    this.sendPrivateMessage = this.sendPrivateMessage.bind(this);
+    this.getReceiver = this.getReceiver.bind(this);
   }
 
   getAccounts(){
@@ -95,6 +98,10 @@ class App extends Component {
     );
   }
 
+  getReceiver (receiver) {
+    this.setState({to: receiver});
+  }
+
   generateMessage () {
     const time =  moment().format('MMMM Do YYYY, h:mm:ss a');
       socket.emit('SEND_MESSAGE',
@@ -107,36 +114,34 @@ class App extends Component {
       this.setState({value:''})
     }
 
-  handleChange(value) {
-     this.setState({value: value});
+    sendPrivateMessage(){
+      const time =  moment().format('MMMM Do YYYY, h:mm:ss a');
+        socket.emit('PRIVATE_MESSAGE',
+          {
+            sender: this.state.userAddress,
+            receiver: this.state.to,
+            roomSender: this.state.userAddress +'_'+ this.state.to,
+            roomReceiver: this.state.to +'_'+ this.state.userAddress,
+            payload: this.state.value,
+            timestamp: time
+          }
+        );
+        this.setState({value:''})
+    }
+
+  handleChange(evt) {
+    const name = ((evt.target) || evt).name; // for onClick event, we pass in an object with format {name: '', value: ''}
+    const value = ((evt.target) || evt).value; // for onClick event, we pass in an object with format {name: '', value: ''}
+    this.setState({
+      [name]: value
+    });
    }
 
-  handlePressEnter (evt) {
-    if (evt.key === 'Enter') {
-      this.generateMessage();
-      this.setState({value:''});
-      evt.preventDefault();
-    }
-  }
-
   signInPrivate () {
-    // this.setState()
-    console.log('triggered private function in app.js')
-      socket.emit('JOIN', this.state.userAddress);
-      console.log('emitted to join room message in app.js')
-      // socket.emit('message', 'welcome to private chat');
-  }
-
-  sendPrivate () {
-    socket.emit('PRIVATE_MESSAGE', { msg:'Private message from client', room: this.state.userAddress})
-  }
-
-  receivePrivate () {
-    // socket.on('JOIN', function(room) {
-    //   console.log('room hash:', room)
-    //   socket.join(room);
-    //   console.log('join room')
-
+    const sender = this.state.userAddress
+    const to = this.state.to
+    socket.emit('JOIN', sender + '_' + to);
+    socket.emit('JOIN', to + '_' + sender);
   }
 
   signIn () {
@@ -157,7 +162,7 @@ class App extends Component {
     return (
       <div className="App">
         <Switch>
-          <Route exact path='/login'
+          <Route exact path='/'
             render={routeProps =>
               <Login
               {...routeProps}
@@ -167,7 +172,7 @@ class App extends Component {
               getCoinbase={this.getCoinbase}
               signIn={this.signIn}/>}
           />
-          <Route exact path='/'
+          <Route exact path='/chat'
             render={routeProps =>
               <Chat {...routeProps}
               loggedIn={this.state.loggedIn}
@@ -181,9 +186,21 @@ class App extends Component {
               chatHistory={this.state.chatHistory}
               userLoggedIn={this.state.userLoggedIn}
               signInPrivate={this.signInPrivate}
-              sendPrivate={this.sendPrivate}
-              receivePrivate={this.receivePrivate}
+              to={this.state.to}
+              getReceiver={this.getReceiver}
               />}
+           />
+           <Route exact path='/privateChat'
+             render={routeProps =>
+               <PrivateChat
+               {...routeProps}
+               to={this.state.to}
+               userAddress={this.state.userAddress}
+               handleChange={evt => this.handleChange(evt)}
+               value={this.state.value}
+               sendPrivateMessage={this.sendPrivateMessage}
+               privateChatHistory={this.state.privateChatHistory}
+               />}
            />
         </Switch>
       </div>

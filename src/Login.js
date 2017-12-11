@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { userEthereumClient } from './ethereumClient.js'
 import { Grid, Col, Row } from 'react-bootstrap'
+import { Button } from './ui-component/Button.js'
 
 const H2 = styled.h2`
   color: #F44336;
@@ -10,13 +11,6 @@ const P = styled.p`
   color: black;
 `;
 
-const Button = styled.button`
-  border-radius: 5px;
-  border: none;
-  background-color: #F44336;
-  color: #ffffff;
-  padding: 10px;
-`;
 const BackgroundAlign = styled.div`
   min-height: 100%;
   min-height: 100vh;
@@ -43,13 +37,13 @@ class Login extends Component {
       this.goToChat = this.goToChat.bind(this);
   }
 
-  checkLogin = () => {
+  checkLogin () {
     this.props.getAccounts();
     this.props.getCoinbase();
   }
 
   goToChat () {
-      this.props.history.push('/');
+      this.props.history.push('/chat');
       this.props.signIn();
     }
 

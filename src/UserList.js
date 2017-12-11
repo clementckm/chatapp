@@ -4,17 +4,22 @@ import { socket } from './socket.js'
 class UserList extends Component {
   constructor(props) {
     super(props);
-
+    this.getReceiver = this.getReceiver.bind(this);
   }
 
+  getReceiver (receiver) {
+    this.props.getReceiver(receiver);
+  }
 
   render() {
     return (
       <div>
       User List:
+      <ul>
       {this.props.userLoggedIn.map((item, i) => {
-        return (<p key={i}>{item.userAddress}</p>)
+        return (<li onClick={() => this.getReceiver(item.userAddress)} key={i}>{item.userAddress}</li>)
       })}
+      </ul>
       </div>
 
     )

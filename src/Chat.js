@@ -5,27 +5,9 @@ import ChatHistory from './ChatHistory.js'
 import styled from 'styled-components'
 import UserList from './UserList.js'
 import { Grid, Col, Row } from 'react-bootstrap'
+import { Button } from './ui-component/Button.js'
+import { ChatInputBox } from './ui-component/ChatInputBox.js'
 
-const ChatInputBox = styled.input`
-  position: fixed;
-  bottom: 8px;
-  width: 100%;
-  max-width: 650px; //variable
-  padding: 10px;
-  height: 40px;
-  font-size: 20px;
-  margin-top: 10px;
-  outline: none;
-  border: 1px solid #8f9696;
-  margin-top: 0;
-`;
-const Button = styled.button`
-  border-radius: 5px;
-  border: none;
-  background-color: #F44336;
-  color: #ffffff;
-  padding: 10px;
-`;
 const P = styled.p`
   color: black;
 `;
@@ -40,14 +22,11 @@ class Chat extends Component {
       this.handleInputChange = this.handleInputChange.bind(this);
       this.handlePressEnter = this.handlePressEnter.bind(this);
       this.logout = this.logout.bind(this);
-      this.reconnect = this.reconnect.bind(this);
       this.signInPrivate = this.signInPrivate.bind(this);
-      this.sendPrivate = this.sendPrivate.bind(this);
-      this.receivePrivate = this.receivePrivate.bind(this);
     }
 
     handleInputChange(evt) {
-      this.props.handleChange(evt.target.value);
+      this.props.handleChange(evt);
      }
 
 
@@ -59,48 +38,35 @@ class Chat extends Component {
     }
 
     signInPrivate () {
-      console.log('triggered chat.js private message')
       this.props.signInPrivate();
-    }
-
-    sendPrivate () {
-      console.log('send private messsage')
-      this.props.sendPrivate();
-    }
-
-    receivePrivate () {
-      console.log('receive private function triggered')
-      this.props.receivePrivate();
+      this.props.history.push('/privateChat')
     }
 
     logout(){
-      this.props.history.push('/Login');
+      this.props.history.push('/');
       this.props.logout();
     }
 
-    reconnect () {
-      this.props.getCoinbase();
-      this.props.getAccounts();
-    }
-          //  <Button onClick={() => this.reconnect()}>Reconnect</Button>
     render() {
       return (
         <Grid>
           <Row>
           <Col sm={8} smOffset={2}>
+           <P>Welcome to public chat room</P>
            <P>User address: {this.props.userAddress}</P>
            <Button onClick={this.signInPrivate}>Private Chat</Button>
-           <Button onClick={this.sendPrivate}>Send Private Chat</Button>
-           <Button onClick={this.receivePrivate}>Receive Private Message</Button>
            <Button onClick={this.logout}>Logout</Button>
+
           </Col>
           </Row>
           {this.props.loggedIn === "Successfully connected to MetaMask" ?
             <Row>
             <Col sm={8} smOffset={2}>
-              <UserList userLoggedIn={this.props.userLoggedIn}/>
+              <UserList getReceiver={this.props.getReceiver} userLoggedIn={this.props.userLoggedIn}/>
+
+              Send To: {this.props.to}
               <ChatHistory userAddress={this.props.userAddress} chatHistory={this.props.chatHistory} />
-              <ChatInputBox placeholder='Type a message' value={this.props.value} onChange={this.handleInputChange} onKeyPress={this.handlePressEnter}/>
+              <ChatInputBox placeholder='Type a message' name='value' value={this.props.value} onChange={this.handleInputChange} onKeyPress={this.handlePressEnter}/>
             </Col>
             </Row>
             : ('')}
