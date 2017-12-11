@@ -41,7 +41,9 @@ class Chat extends Component {
       this.handlePressEnter = this.handlePressEnter.bind(this);
       this.logout = this.logout.bind(this);
       this.reconnect = this.reconnect.bind(this);
-
+      this.signInPrivate = this.signInPrivate.bind(this);
+      this.sendPrivate = this.sendPrivate.bind(this);
+      this.receivePrivate = this.receivePrivate.bind(this);
     }
 
     handleInputChange(evt) {
@@ -54,6 +56,21 @@ class Chat extends Component {
         this.props.generateMessage();
         evt.preventDefault();
       }
+    }
+
+    signInPrivate () {
+      console.log('triggered chat.js private message')
+      this.props.signInPrivate();
+    }
+
+    sendPrivate () {
+      console.log('send private messsage')
+      this.props.sendPrivate();
+    }
+
+    receivePrivate () {
+      console.log('receive private function triggered')
+      this.props.receivePrivate();
     }
 
     logout(){
@@ -72,8 +89,10 @@ class Chat extends Component {
           <Row>
           <Col sm={8} smOffset={2}>
            <P>User address: {this.props.userAddress}</P>
-
-          <Button onClick={this.logout}>Logout</Button>
+           <Button onClick={this.signInPrivate}>Private Chat</Button>
+           <Button onClick={this.sendPrivate}>Send Private Chat</Button>
+           <Button onClick={this.receivePrivate}>Receive Private Message</Button>
+           <Button onClick={this.logout}>Logout</Button>
           </Col>
           </Row>
           {this.props.loggedIn === "Successfully connected to MetaMask" ?

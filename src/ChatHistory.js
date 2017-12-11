@@ -45,7 +45,6 @@ class ChatHistory extends Component {
   }
   scrollToBottom() {
     const node = ReactDOM.findDOMNode(this.el)
-    console.log(node)
     node.scrollIntoView();
 
   }

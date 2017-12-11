@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
       loggedIn: 'Loading',
       userAddress: 'Getting address..',
+      to:'',
       userLoggedIn:[],
       chatHistory:[],
       value: '',
@@ -23,6 +24,10 @@ class App extends Component {
       }
     }
 
+    socket.on('PRIVATE_MESSAGE', function(msg) {
+      console.log(msg);
+      addMessage(msg);
+    });
     socket.on('RECEIVE_MESSAGE', function(data){
       addMessage(data);
     });
@@ -55,6 +60,9 @@ class App extends Component {
     this.handlePressEnter = this.handlePressEnter.bind(this);
     this.logout = this.logout.bind(this);
     this.signIn = this.signIn.bind(this);
+    this.signInPrivate = this.signInPrivate.bind(this);
+    this.sendPrivate = this.sendPrivate.bind(this);
+    this.receivePrivate = this.receivePrivate.bind(this);
   }
 
   getAccounts(){
@@ -111,6 +119,26 @@ class App extends Component {
     }
   }
 
+  signInPrivate () {
+    // this.setState()
+    console.log('triggered private function in app.js')
+      socket.emit('JOIN', this.state.userAddress);
+      console.log('emitted to join room message in app.js')
+      // socket.emit('message', 'welcome to private chat');
+  }
+
+  sendPrivate () {
+    socket.emit('PRIVATE_MESSAGE', { msg:'Private message from client', room: this.state.userAddress})
+  }
+
+  receivePrivate () {
+    // socket.on('JOIN', function(room) {
+    //   console.log('room hash:', room)
+    //   socket.join(room);
+    //   console.log('join room')
+
+  }
+
   signIn () {
     socket.emit('ONLINE',{
       userAddress: this.state.userAddress
@@ -152,6 +180,9 @@ class App extends Component {
               value={this.state.value}
               chatHistory={this.state.chatHistory}
               userLoggedIn={this.state.userLoggedIn}
+              signInPrivate={this.signInPrivate}
+              sendPrivate={this.sendPrivate}
+              receivePrivate={this.receivePrivate}
               />}
            />
         </Switch>
