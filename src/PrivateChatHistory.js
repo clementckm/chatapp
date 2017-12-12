@@ -16,21 +16,39 @@ class PrivateChatHistory extends Component {
   componentDidUpdate() {
     this.scrollToBottom();
   }
+
   render() {
     return (
       <ChatHistoryBox>
-        {this.props.privateChatHistory.map((item, i)=>{
-          return (
-            <ChatBox ref={i} userAddress={this.props.userAddress} sender={item.sender} key={i}>
-            <PayloadBox userAddress={this.props.userAddress} sender={item.sender}>{item.payload}</PayloadBox>
-            <SenderBox>{item.sender}</SenderBox>
-            <TimestampBox>{item.timestamp}</TimestampBox>
-            </ChatBox>
-          );
-        })
-        }
-        <EndDiv ref={el => { this.el = el; }}></EndDiv>
-      </ChatHistoryBox>
+      {this.props.to === this.props.userAddress ? ( // message to self
+          this.props.privateChatHistory.map((item, i)=>{
+            if (item.receiver === this.props.userAddress && item.sender === this.props.userAddress){
+              return (
+                <ChatBox ref={i} userAddress={this.props.userAddress} sender={item.sender} key={i}>
+                <PayloadBox userAddress={this.props.userAddress} sender={item.sender}>{item.payload}</PayloadBox>
+                <SenderBox>{item.sender}</SenderBox>
+                <TimestampBox>{item.timestamp}</TimestampBox>
+                </ChatBox>
+                );
+              }
+            })
+          ) : (
+            this.props.privateChatHistory.map((item, i)=>{ // message to others
+              if(item.receiver === this.props.to || item.sender === this.props.to) {
+                return (
+                  <ChatBox ref={i} userAddress={this.props.userAddress} sender={item.sender} key={i}>
+                  <PayloadBox userAddress={this.props.userAddress} sender={item.sender}>{item.payload}</PayloadBox>
+                  <SenderBox>{item.sender}</SenderBox>
+                  <TimestampBox>{item.timestamp}</TimestampBox>
+                  </ChatBox>
+                );
+              }
+            })
+          )
+      }
+
+      <EndDiv ref={el => { this.el = el; }}></EndDiv>
+    </ChatHistoryBox>
     );
   }
 

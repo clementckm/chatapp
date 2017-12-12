@@ -39,7 +39,7 @@ class PrivateChat extends Component {
           <Button onClick={this.backButton}>Back</Button>
           <p>From : {this.props.userAddress}</p>
           <p>To: {this.props.to}</p>
-          <PrivateChatHistory userAddress={this.props.userAddress} privateChatHistory={this.props.privateChatHistory} />
+          <PrivateChatHistory userAddress={this.props.userAddress} to={this.props.to} privateChatHistory={this.props.privateChatHistory} />
        </Col>
        </Row>
       </Grid>
