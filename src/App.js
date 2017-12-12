@@ -31,13 +31,13 @@ class App extends Component {
       addPrivateMessage(data);
     });
     const addPrivateMessage = data => {
-      this.setState({privateChatHistory: [...this.state.privateChatHistory, data]});
+      this.setState({privateChatHistory: data});
     };
     socket.on('RECEIVE_MESSAGE', function(data){
       addMessage(data);
     });
     const addMessage = data => {
-      this.setState({chatHistory: [...this.state.chatHistory, data]});
+      this.setState({chatHistory: data});
     };
     socket.on('ONLINE_USER', function(data){
       addUser(data);
