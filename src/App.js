@@ -7,6 +7,7 @@ import io from "socket.io-client"
 import Login from './Login.js'
 import Chat from './Chat.js'
 import PrivateChat from './PrivateChat.js'
+import PublicChat from './PublicChat.js'
 
 class App extends Component {
   constructor(props) {
@@ -166,15 +167,8 @@ class App extends Component {
           <Route exact path='/chat'
             render={routeProps =>
               <Chat {...routeProps}
-              loggedIn={this.state.loggedIn}
               userAddress={this.state.userAddress}
-              getAccounts={this.getAccounts}
-              getCoinbase={this.getCoinbase}
               logout={this.logout}
-              handleChange={evt => this.handleChange(evt)}
-              generateMessage={this.generateMessage}
-              value={this.state.value}
-              chatHistory={this.state.chatHistory}
               userLoggedIn={this.state.userLoggedIn}
               signInPrivate={this.signInPrivate}
               to={this.state.to}
@@ -191,6 +185,18 @@ class App extends Component {
                value={this.state.value}
                sendPrivateMessage={this.sendPrivateMessage}
                privateChatHistory={this.state.privateChatHistory}
+               />}
+           />
+           <Route exact path='/publicChat'
+             render={routeProps =>
+               <PublicChat
+               {...routeProps}
+               loggedIn={this.state.loggedIn}
+               userAddress={this.state.userAddress}
+               handleChange={evt => this.handleChange(evt)}
+               value={this.state.value}
+               chatHistory={this.state.chatHistory}
+               generateMessage={this.generateMessage}
                />}
            />
         </Switch>
