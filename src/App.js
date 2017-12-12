@@ -41,22 +41,13 @@ class App extends Component {
     socket.on('ONLINE_USER', function(data){
       addUser(data);
     });
-    const addUser = data => {
-      this.setState({userLoggedIn: [...this.state.userLoggedIn, data]});
-    };
     socket.on('OFFLINE_USER', function(data){
-      removeUser(data);
+      addUser(data);
     });
-    const removeUser = data => {
-      var len
-      var u = this.state.userLoggedIn.slice();
-      for(var i = 0, len = this.state.userLoggedIn.length; i < len; i++ ) {
-           if( u[i].userAddress === data ){
-               u.splice(i,1);
-           }
-       }
-      this.setState({userLoggedIn: u})
-    }
+    const addUser = data => {
+      this.setState({userLoggedIn: data});
+    };
+
     this.getCoinbase = this.getCoinbase.bind(this);
     this.getAccounts = this.getAccounts.bind(this);
     this.generateMessage = this.generateMessage.bind(this);

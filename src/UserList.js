@@ -7,8 +7,8 @@ class UserList extends Component {
     this.getReceiver = this.getReceiver.bind(this);
   }
 
-  getReceiver (receiver) {
-    this.props.getReceiver(receiver);
+  getReceiver (item) {
+    this.props.getReceiver(item);
   }
 
   render() {
@@ -17,7 +17,7 @@ class UserList extends Component {
       User List:
       <ul>
       {this.props.userLoggedIn.map((item, i) => {
-        return (<li onClick={() => this.getReceiver(item.userAddress)} key={i}>{item.userAddress}</li>)
+        return (<li onClick={() => this.getReceiver(item)} key={i}>{item}</li>)
       })}
       </ul>
       </div>
