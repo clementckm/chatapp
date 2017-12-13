@@ -4,6 +4,7 @@ import io from "socket.io-client"
 import ChatHistory from './ChatHistory.js'
 import styled from 'styled-components'
 import UserList from './UserList.js'
+import Friends from './Friends.js'
 import { Grid, Col, Row } from 'react-bootstrap'
 import { Button } from './ui-component/Button.js'
 import { ChatInputBox } from './ui-component/ChatInputBox.js'
@@ -19,24 +20,10 @@ const ChatArea = styled.div`
 class Chat extends Component {
   constructor(props) {
     super(props);
-      // this.handleInputChange = this.handleInputChange.bind(this);
-      // this.handlePressEnter = this.handlePressEnter.bind(this);
       this.logout = this.logout.bind(this);
       this.signInPrivate = this.signInPrivate.bind(this);
       this.signInPublic = this.signInPublic.bind(this);
     }
-
-    // handleInputChange(evt) {
-    //   this.props.handleChange(evt);
-    //  }
-
-
-    // handlePressEnter (evt) {
-    //   if (evt.key === 'Enter') {
-    //     this.props.generateMessage();
-    //     evt.preventDefault();
-    //   }
-    // }
 
     signInPrivate () {
       this.props.signInPrivate();
@@ -51,17 +38,7 @@ class Chat extends Component {
       this.props.history.push('/');
       this.props.logout();
     }
-    // {this.props.loggedIn === "Successfully connected to MetaMask" ?
-    //   <Row>
-    //   <Col sm={8} smOffset={2}>
-    //     <UserList getReceiver={this.props.getReceiver} userLoggedIn={this.props.userLoggedIn}/>
-    //
-    //     Send To: {this.props.to}
-    //     <ChatHistory userAddress={this.props.userAddress} chatHistory={this.props.chatHistory} />
-    //     <ChatInputBox placeholder='Type a message' name='value' value={this.props.value} onChange={this.handleInputChange} onKeyPress={this.handlePressEnter}/>
-    //   </Col>
-    //   </Row>
-    //   : ('')}
+
     render() {
       return (
         <Grid>
@@ -72,8 +49,8 @@ class Chat extends Component {
            <Button onClick={this.signInPrivate}>Private Chat</Button>
            <Button onClick={this.signInPublic}>Public Chat</Button>
            <Button onClick={this.logout}>Logout</Button>
-           <UserList getReceiver={this.props.getReceiver} userLoggedIn={this.props.userLoggedIn}/>
-
+           <UserList addFriend={this.props.addFriend} getReceiver={this.props.getReceiver} userLoggedIn={this.props.userLoggedIn}/>
+           <Friends friends={this.props.friends} />
            Send To: {this.props.to}
           </Col>
           </Row>

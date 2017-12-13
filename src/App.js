@@ -15,6 +15,7 @@ class App extends Component {
     this.state = {
       loggedIn: 'Loading',
       userAddress: 'Getting address..',
+      friends:[],
       to:'',
       userLoggedIn:[],
       chatHistory:[],
@@ -26,19 +27,28 @@ class App extends Component {
         timestamp: ''
       }
     }
-
+    // Friend List
+    socket.on('FRIENDS_LIST', function(data) {
+      getFriendList(data);
+    });
+    const getFriendList = data => {
+      this.setState({friends: data});
+    };
+    // Private Message
     socket.on('PRIVATE_MESSAGE', function(data) {
       addPrivateMessage(data);
     });
     const addPrivateMessage = data => {
       this.setState({privateChatHistory: data});
     };
+    // Public Message
     socket.on('RECEIVE_MESSAGE', function(data){
       addMessage(data);
     });
     const addMessage = data => {
       this.setState({chatHistory: data});
     };
+    // User
     socket.on('ONLINE_USER', function(data){
       addUser(data);
     });
@@ -58,6 +68,7 @@ class App extends Component {
     this.signInPrivate = this.signInPrivate.bind(this);
     this.sendPrivateMessage = this.sendPrivateMessage.bind(this);
     this.getReceiver = this.getReceiver.bind(this);
+    this.addFriend = this.addFriend.bind(this);
   }
 
   getAccounts(){
@@ -106,19 +117,19 @@ class App extends Component {
       this.setState({value:''})
     }
 
-    sendPrivateMessage(){
-      const time =  moment().format('MMMM Do YYYY, h:mm:ss a');
-        socket.emit('PRIVATE_MESSAGE',
-          {
-            sender: this.state.userAddress,
-            receiver: this.state.to,
-            roomSender: this.state.userAddress +'_'+ this.state.to,
-            roomReceiver: this.state.to +'_'+ this.state.userAddress,
-            payload: this.state.value,
-            timestamp: time
-          }
-        );
-        this.setState({value:''})
+  sendPrivateMessage(){
+    const time =  moment().format('MMMM Do YYYY, h:mm:ss a');
+      socket.emit('PRIVATE_MESSAGE',
+        {
+          sender: this.state.userAddress,
+          receiver: this.state.to,
+          roomSender: this.state.userAddress +'_'+ this.state.to,
+          roomReceiver: this.state.to +'_'+ this.state.userAddress,
+          payload: this.state.value,
+          timestamp: time
+        }
+      );
+      this.setState({value:''})
     }
 
   handleChange(evt) {
@@ -150,6 +161,10 @@ class App extends Component {
     })
   }
 
+  addFriend (item) {
+    socket.emit('FRIENDS', item)
+  }
+
   render() {
     return (
       <div className="App">
@@ -173,6 +188,8 @@ class App extends Component {
               signInPrivate={this.signInPrivate}
               to={this.state.to}
               getReceiver={this.getReceiver}
+              addFriend={this.addFriend}
+              friends={this.state.friends}
               />}
            />
            <Route exact path='/privateChat'
