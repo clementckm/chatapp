@@ -19,6 +19,28 @@ injectGlobal`
     background-color: #5f6c72;
   }
 
+  #root {
+    height: 100%;
+  }
+
+  .App {
+    height: 100%;
+  }
+
+  .container {
+    height: 100%;
+  }
+
+  .row {
+    height: 100%;
+  }
+
+  .col-sm-10 {
+    height:100%;
+  }
+  .col-sm-6 {
+    height: 100%
+  }
 `;
 
 ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));

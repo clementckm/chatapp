@@ -8,14 +8,14 @@ import Friends from './Friends.js'
 import { Grid, Col, Row } from 'react-bootstrap'
 import { Button } from './ui-component/Button.js'
 import { ChatInputBox } from './ui-component/ChatInputBox.js'
-
-const P = styled.p`
-  color: black;
-`;
-
+import { ChatBackground } from './ui-component/ChatBackground.js'
+import { H2, H4 } from './ui-component/Font.js'
+import { Nav } from './ui-component/Nav.js'
 const ChatArea = styled.div`
   border: 1px solid red;
 `;
+
+
 
 class Chat extends Component {
   constructor(props) {
@@ -41,20 +41,34 @@ class Chat extends Component {
 
     render() {
       return (
-        <Grid>
-          <Row>
-          <Col sm={8} smOffset={2}>
-           <P>Welcome to public chat room</P>
-           <P>User address: {this.props.userAddress}</P>
+        <Row>
+
+          <Col sm={10} smOffset={1}>
+
+           <H2>Chat Room.</H2>
+
+           <H4>User address: {this.props.userAddress}</H4>
+           <Nav>
            <Button onClick={this.signInPublic}>Public Chat</Button>
            <Button onClick={this.logout}>Logout</Button>
+           </Nav>
+            <H4>Send To: {this.props.to} </H4>
+           <Row>
+           <Col sm={6}>
+           <ChatBackground>
            <UserList addFriend={this.props.addFriend} signInPrivate={this.signInPrivate} getReceiver={this.props.getReceiver} userLoggedIn={this.props.userLoggedIn}/>
+           </ChatBackground>
+           </Col>
+           <Col sm={6}>
+           <ChatBackground>
            <Friends friends={this.props.friends} getReceiver={this.props.getReceiver} signInPrivate={this.signInPrivate} />
-           Send To: {this.props.to}
-          </Col>
-          </Row>
 
-       </Grid>
+           </ChatBackground>
+           </Col>
+           </Row>
+          </Col>
+
+       </Row>
         )
       }
   }

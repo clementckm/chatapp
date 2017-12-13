@@ -4,16 +4,13 @@ import { userEthereumClient } from './ethereumClient.js'
 import { Grid, Col, Row } from 'react-bootstrap'
 import { Button } from './ui-component/Button.js'
 import { keyframes } from 'styled-components'
+import { H2 } from './ui-component/Font.js'
   // color: #5f6c72;
 const boxChange = keyframes`
   from {width: 0%;}
   to {width: 100%;}
 `;
 
-const H2 = styled.h2`
- color: #ffffff;
-
-`;
 const Status = styled.div`
   margin: 0px;
 `;
@@ -38,13 +35,12 @@ const BackgroundAlign = styled.div`
 `;
 
 const LoginBox = styled.div`
-  height: 50px;
+  height: 100%;
   border-radius: 5px;
   padding: 15px;
   background-color: #FFFFFF;
   margin-top: 15px;
   margin-bottom: 15px;
-  overflow: hidden !important;
   ${props => props.loggedIn  === "Successfully connected to MetaMask" ? `animation: ${boxChange} normal 0.5s` : ''  }
 `;
 
