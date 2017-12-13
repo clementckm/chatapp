@@ -6,6 +6,7 @@ class UserList extends Component {
     super(props);
     this.getReceiver = this.getReceiver.bind(this);
     this.addFriend = this.addFriend.bind(this);
+    this.signInPrivate = this.signInPrivate.bind(this);
   }
 
   getReceiver (item) {
@@ -16,13 +17,21 @@ class UserList extends Component {
     this.props.addFriend(item)
   }
 
+  signInPrivate () {
+    this.props.signInPrivate();
+  }
+
   render() {
     return (
       <div>
       User List:
       <ul>
       {this.props.userLoggedIn.map((item, i) => {
-        return (<li onClick={() => this.getReceiver(item)} key={i}>{item}<Button onClick={() => this.addFriend(item)}>Add Friend</Button></li>)
+        return (
+          <li onClick={() => this.getReceiver(item)} key={i}>{item}
+          <Button onClick={() => this.addFriend(item)}>Add Friend</Button>
+          <Button onClick={() => this.signInPrivate()}>Private Chat</Button>
+          </li>)
       })}
       </ul>
       </div>

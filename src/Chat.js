@@ -46,10 +46,9 @@ class Chat extends Component {
           <Col sm={8} smOffset={2}>
            <P>Welcome to public chat room</P>
            <P>User address: {this.props.userAddress}</P>
-           <Button onClick={this.signInPrivate}>Private Chat</Button>
            <Button onClick={this.signInPublic}>Public Chat</Button>
            <Button onClick={this.logout}>Logout</Button>
-           <UserList addFriend={this.props.addFriend} getReceiver={this.props.getReceiver} userLoggedIn={this.props.userLoggedIn}/>
+           <UserList addFriend={this.props.addFriend} signInPrivate={this.signInPrivate} getReceiver={this.props.getReceiver} userLoggedIn={this.props.userLoggedIn}/>
            <Friends friends={this.props.friends} />
            Send To: {this.props.to}
           </Col>
