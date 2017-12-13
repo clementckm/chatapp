@@ -49,7 +49,7 @@ class Chat extends Component {
            <Button onClick={this.signInPublic}>Public Chat</Button>
            <Button onClick={this.logout}>Logout</Button>
            <UserList addFriend={this.props.addFriend} signInPrivate={this.signInPrivate} getReceiver={this.props.getReceiver} userLoggedIn={this.props.userLoggedIn}/>
-           <Friends friends={this.props.friends} />
+           <Friends friends={this.props.friends} getReceiver={this.props.getReceiver} signInPrivate={this.signInPrivate} />
            Send To: {this.props.to}
           </Col>
           </Row>

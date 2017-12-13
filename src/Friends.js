@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
+import { Button } from './ui-component/Button.js'
 
 class Friends extends Component {
   constructor(props) {
     super(props);
-    this.getFriends = this.getFriends.bind(this);
+    this.getReceiver = this.getReceiver.bind(this);
+    this.signInPrivate = this.signInPrivate.bind(this);
   }
 
-  getFriends (item) {
-    console.log('friends')
+  getReceiver (item) {
+    this.props.getReceiver(item)
+  }
+
+  signInPrivate () {
+    this.props.signInPrivate();
   }
 
   render() {
@@ -16,7 +22,9 @@ class Friends extends Component {
       Friends List:
       <ul>
       {this.props.friends.map((item, i) => {
-        return (<li onClick={() => this.getFriends(item)} key={i}>{item}</li>)
+        return (
+          <li onClick={() => this.getReceiver(item)} key={i}>{item}
+          <Button onClick={() => this.signInPrivate()}>Private Chat</Button></li>)
       })}
       </ul>
       </div>
