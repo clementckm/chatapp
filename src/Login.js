@@ -3,12 +3,19 @@ import styled from 'styled-components'
 import { userEthereumClient } from './ethereumClient.js'
 import { Grid, Col, Row } from 'react-bootstrap'
 import { Button } from './ui-component/Button.js'
+import { keyframes } from 'styled-components'
+  // color: #5f6c72;
+const boxChange = keyframes`
+  from {width: 0%;}
+  to {width: 100%;}
+`;
 
 const H2 = styled.h2`
-  color: #F44336;
+ color: #ffffff;
+
 `;
-const P = styled.p`
-  color: black;
+const Status = styled.div`
+  margin: 0px;
 `;
 
 const BackgroundAlign = styled.div`
@@ -29,6 +36,19 @@ const BackgroundAlign = styled.div`
        -ms-flex-align : center;
           align-items : center;
 `;
+
+const LoginBox = styled.div`
+  height: 50px;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #FFFFFF;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  overflow: hidden !important;
+  ${props => props.loggedIn  === "Successfully connected to MetaMask" ? `animation: ${boxChange} normal 0.5s` : ''  }
+`;
+
+
 
 class Login extends Component {
   constructor(props) {
@@ -53,14 +73,22 @@ class Login extends Component {
       <BackgroundAlign>
       <Grid>
         <Row>
-        <Col sm={8} smOffset={2}>
-        <H2>Welcome to the Metamask Chat.</H2>
-         <P>Login Status: {this.props.loggedIn}</P>
-         <P>User address: {this.props.userAddress}</P>
+        <Col sm={6} smOffset={3}>
+        <H2>Chat App.</H2>
+        {this.props.loggedIn === "Successfully connected to MetaMask" ?
+        <div>
+        <LoginBox loggedIn={this.props.loggedIn}>
+         <Status>Login Status: {this.props.loggedIn}</Status>
+         </LoginBox>
+         <LoginBox loggedIn={this.props.loggedIn}>
+         <Status>User address: {this.props.userAddress}</Status>
+         </LoginBox>
+        <Button onClick={() => this.goToChat()}>Login</Button>
+        </div>
+        : ('') }
          <Button onClick={() => this.checkLogin()}>Connect to Metamask</Button>
-         {this.props.loggedIn === "Successfully connected to MetaMask" ?
-         <Button onClick={() => this.goToChat()}>Login</Button>
-         : ('') }
+
+
          </Col>
          </Row>
       </Grid>
