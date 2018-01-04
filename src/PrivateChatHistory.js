@@ -34,7 +34,7 @@ class PrivateChatHistory extends Component {
             })
           ) : (
             this.props.privateChatHistory.map((item, i)=>{ // message to others
-              if(item.receiver === this.props.to || item.sender === this.props.to) {
+              if((item.receiver === this.props.to && item.sender === this.props.userAddress) || (item.sender === this.props.to && item.receiver === this.props.userAddress)) {
                 return (
                   <ChatBox ref={i} userAddress={this.props.userAddress} sender={item.sender} key={i}>
                   <PayloadBox userAddress={this.props.userAddress} sender={item.sender}>{item.payload}</PayloadBox>

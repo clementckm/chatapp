@@ -20,7 +20,7 @@ class UserList extends Component {
   signInPrivate () {
     this.props.signInPrivate();
   }
-
+        // <Button onClick={() => this.signInPrivate()}>Private Chat</Button>
   render() {
     return (
       <div>
@@ -30,7 +30,7 @@ class UserList extends Component {
         return (
           <li onClick={() => this.getReceiver(item)} key={i}>{item}
           <Button onClick={() => this.addFriend(item)}>Add Friend</Button>
-          <Button onClick={() => this.signInPrivate()}>Private Chat</Button>
+
           </li>)
       })}
       </ul>

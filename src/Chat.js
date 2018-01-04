@@ -61,7 +61,7 @@ class Chat extends Component {
            </Col>
            <Col sm={6}>
            <ChatBackground>
-           <Friends friends={this.props.friends} getReceiver={this.props.getReceiver} signInPrivate={this.signInPrivate} />
+           <Friends userAddress={this.props.userAddress} friends={this.props.friends} getReceiver={this.props.getReceiver} signInPrivate={this.signInPrivate} />
 
            </ChatBackground>
            </Col>

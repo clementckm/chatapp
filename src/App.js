@@ -28,11 +28,11 @@ class App extends Component {
       }
     }
     // Friend List
-    socket.on('FRIENDS_LIST', function(data) {
-      getFriendList(data);
+    socket.on('FRIENDS_LIST', function(friends) {
+      getFriendList(friends);
     });
-    const getFriendList = data => {
-      this.setState({friends: data});
+    const getFriendList = friends => {
+      this.setState({...this.state.friends, friends});
     };
     // Private Message
     socket.on('PRIVATE_MESSAGE', function(data) {
@@ -148,7 +148,7 @@ class App extends Component {
   }
 
   signIn () {
-    socket.emit('ONLINE',{
+    socket.emit('ONLINE', {
       userAddress: this.state.userAddress
     })
   }
@@ -157,12 +157,27 @@ class App extends Component {
     socket.emit('OFFLINE', this.state.userAddress)
     this.setState({
       loggedIn: 'Loading',
-      userAddress: 'Getting address..'
+      userAddress: 'Getting address..',
+      friends:[],
+      to:'',
+      userLoggedIn:[],
+      chatHistory:[],
+      privateChatHistory:[],
+      value: '',
+      message: {
+        sender: '',
+        payload: '',
+        timestamp: ''
+      }
     })
   }
 
   addFriend (item) {
-    socket.emit('FRIENDS', item)
+    socket.emit('JOIN_SELF', this.state.userAddress)
+    socket.emit('FRIENDS', {
+      userAddress: this.state.userAddress,
+      friend: item
+    })
   }
 
   render() {
